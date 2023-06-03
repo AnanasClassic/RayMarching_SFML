@@ -2,7 +2,7 @@
 
 #include "SFML/Graphics.hpp"
 #include "Ray.h"
-#include "Object.h"
+#include "Shape.h"
 #include "RMalgo.h"
 #include "Math.h"
 
@@ -35,14 +35,14 @@ public:
         Matrix3f basis = Math::makeSpecificBasis(cDir);
         for (float i = 0; i < height; ++i) {
             for (float j = 0; j < width; ++j) {
-                auto dtheta = Math::dtor(fov.y * (static_cast<int>(height) / 2 - i) / height);
-                auto dphi = Math::dtor(fov.x * (static_cast<int>(width) / 2 - j) / width);
-                rays[i][j] = Ray(pos, Math::makeNewPoint(cDir, dtheta, dphi, basis));
+                auto dtheta = Math::dtor(fov.y * (i - static_cast<int>(height) / 2) / height);
+                auto dphi = Math::dtor(fov.x * (j - static_cast<int>(width) / 2) / width);
+                rays[i][j] = Ray(pos, Math::makeNewPoint(cDir, dphi, dtheta, basis));
             }
         }
     }
 
-    void frame(const std::vector<Object *> &objects) {
+    void frame(const std::vector<Shape *> &objects) {
         createRays();
         for (int i = 0; i < height; ++i) {
             for (int j = 0; j < width; ++j) {
@@ -51,11 +51,14 @@ public:
                 if (RMalgo::RayMarch(ray, objects)) {
                     auto grad = RMalgo::getGradient(ray, objects);
                     grad = Math::normalise(grad);
-                    grad += {1,1,1};
-                    grad /= 2.f;
-                    color = sf::Color(grad.x * 255, grad.y * 255, grad.z * 255);
+                    auto skyCos = Math::scalarProduct({0,0,1}, grad);
+                    auto rayCos = std::abs(Math::scalarProduct(Math::normalise(ray.getDir()), grad));
+                    auto pixelColor = (rayCos * skyCos + 1) / 2;
+//                    pixelColor = pixelColor / 2 + 0.5;
+//                    pixelColor = pixelColor * 0.8 + 0.1;
+                    color = sf::Color(pixelColor * 255, pixelColor * 255, pixelColor * 255);
                 } else {
-                    color = sf::Color(127, 127, 127);
+                    color = sf::Color(127, 127, 255);
                 }
                 screen.setPixel(j, i, color);
             }

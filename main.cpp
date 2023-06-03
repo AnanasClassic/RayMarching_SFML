@@ -3,25 +3,27 @@
 #include "SFML/Graphics.hpp"
 #include "Math.h"
 #include <random>
-#include "Object.h"
+#include "Shape.h"
 #include "Camera.h"
 
 int main() {
-    Camera<400, 400> camera;
-    std::vector<Object *> objects;
+    Camera<300, 300> camera;
+    std::vector<Shape *> objects;
     Sphere sphere({0, 0, 0}, 1);
     Sphere sphere2({-0.6, 0.6, 0.6}, 0.5f);
     Sphere sphere3({-0.6, 0.6, -0.6}, 0.5f);
     Sphere sphere4({-0.6, -0.6, 0.6}, 0.5f);
     Sphere sphere5({-0.6, -0.6, -0.6}, 0.5f);
+    Floor floor(-10);
     objects.push_back(&sphere);
     objects.push_back(&sphere2);
     objects.push_back(&sphere3);
     objects.push_back(&sphere4);
     objects.push_back(&sphere5);
+    objects.push_back(&floor);
 
-    camera.setPos({-3, 0, 0});
-    camera.setDir({0, Math::dtor(90)});
+    camera.setPos({-3, 1, 0});
+    camera.setDir({Math::dtor(-20), Math::dtor(90)});
 
     sf::Texture texture;
     texture.create(camera.getSize().x, camera.getSize().y);
