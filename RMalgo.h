@@ -52,5 +52,5 @@ struct RMalgo {
 };
 
 const float RMalgo::precision = 0.00002f;
-const float RMalgo::max_dist_limit = 300.f;
+const float RMalgo::max_dist_limit = 80.f;
 const float RMalgo::min_dist_limit = 0.00001f;
