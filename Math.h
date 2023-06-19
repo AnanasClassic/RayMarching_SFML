@@ -32,4 +32,14 @@ struct Math {
     static Matrix3f T(Matrix3f m);
     static Matrix3f multiply(Matrix3f m1, Matrix3f m2);
     static sf::Vector3f multiply(Matrix3f m, sf::Vector3f v);
+    static float cycle(float num, float a, float b) {
+        if (a == b) {
+            return a;
+        } else if (a > b) {
+            std::swap(a, b);
+        }
+        auto interval = b - a;
+        auto mod = std::fmod(std::fmod(num, interval) + interval, interval);
+        return a + mod;
+    }
 };

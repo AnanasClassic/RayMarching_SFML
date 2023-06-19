@@ -13,12 +13,12 @@ struct RMalgo {
     static float getDist(sf::Vector3f point, const std::vector<Shape *> &objects) {
         float min_dist = max_dist_limit;
         for (auto &object: objects) {
-            min_dist = std::min(min_dist, object->len(point));
+            min_dist = std::min(min_dist, object->dist(point));
         }
         return min_dist;
     }
 
-    static bool RayMarch(Ray &ray, const std::vector<Shape *> &objects) {
+    static bool RayMarch(Ray& ray, const std::vector<Shape *> &objects) {
         auto begin = ray.getPos();
         float min_dist = max_dist_limit;
         while (min_dist > min_dist_limit) {
@@ -51,6 +51,6 @@ struct RMalgo {
     }
 };
 
-const float RMalgo::precision = 0.001f;
-const float RMalgo::max_dist_limit = 100.f;
-const float RMalgo::min_dist_limit = 0.001f;
+const float RMalgo::precision = 0.00002f;
+const float RMalgo::max_dist_limit = 300.f;
+const float RMalgo::min_dist_limit = 0.00001f;

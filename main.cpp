@@ -7,27 +7,31 @@
 #include "Camera.h"
 
 int main() {
-    Camera<300, 300> camera;
+    Camera<700, 700> camera;
     std::vector<Shape *> objects;
-    Sphere sphere({0, 0, 0}, 1);
-    Sphere sphere2({-0.6, 0.6, 0.6}, 0.5f);
-    Sphere sphere3({-0.6, 0.6, -0.6}, 0.5f);
-    Sphere sphere4({-0.6, -0.6, 0.6}, 0.5f);
-    Sphere sphere5({-0.6, -0.6, -0.6}, 0.5f);
-    Floor floor(-10);
-    objects.push_back(&sphere);
-    objects.push_back(&sphere2);
-    objects.push_back(&sphere3);
-    objects.push_back(&sphere4);
-    objects.push_back(&sphere5);
-    objects.push_back(&floor);
+//    Sphere sphere({0, 0, 0}, 0.7);
+//    objects.push_back(&sphere);
+//    CubeWithoutSphereCicled cube({0, 0, 0}, 3, 0.69);
+//    CubeWithoutSphereCicled cube({0, 4, 0}, 1);
+//    objects.push_back(&cube);
+//    Floor floor(-10);
+//    objects.push_back(&floor);
+//RandomSphere randomSphere({4, 0, 0}, 1);
+//    objects.push_back(&randomSphere);
+//    BasicMandelbrot bm(0);
+//    objects.push_back(&bm);
+    CycledThorus thorus({0,0,0}, 3, 1);
+    objects.push_back(&thorus);
 
-    camera.setPos({-3, 1, 0});
-    camera.setDir({Math::dtor(-20), Math::dtor(90)});
+    camera.setPos({-8, 0, 20});
+    camera.setDir({Math::dtor(0), Math::dtor(120)});
 
     sf::Texture texture;
     texture.create(camera.getSize().x, camera.getSize().y);
     sf::Sprite sprite(texture);
+    camera.frame(objects);
+    texture.update(camera.getScreen());
+//    texture.copyToImage().saveToFile("../gallery/" + std::to_string(std::time(0)) + ".png");
     sf::RenderWindow window(sf::VideoMode(camera.getSize().x, camera.getSize().y), "Ray Marching");
     while (window.isOpen()) {
         sf::Event event;
@@ -36,8 +40,6 @@ int main() {
                 window.close();
             }
         }
-        camera.frame(objects);
-        texture.update(camera.getScreen());
         window.clear();
         window.draw(sprite);
         window.display();

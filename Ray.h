@@ -7,7 +7,7 @@ class Ray {
 public:
     Ray() = default;
     Ray(sf::Vector3f pos, sf::Vector3f dir) : pos(pos), dir(dir) {}
-    sf::Vector3f getPos() { return pos; }
-    sf::Vector3f getDir() { return dir; }
+    sf::Vector3f getPos() const { return pos; }
+    sf::Vector3f getDir() const { return dir; }
     virtual void Step(float dt) { pos += dir * dt; }
 };
